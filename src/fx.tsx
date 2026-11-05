@@ -79,6 +79,8 @@ export const GlitchText: React.FC<{
   spacing?: number;
   color?: string;
   dir?: "ltr" | "rtl";
+  colorA?: string;
+  colorB?: string;
 }> = ({
   text,
   size,
@@ -89,6 +91,8 @@ export const GlitchText: React.FC<{
   spacing = 0,
   color = C.white,
   dir = "ltr",
+  colorA = C.cyan,
+  colorB = C.magenta,
 }) => {
   const frame = useCurrentFrame();
   // Glitch only fires on some frames
@@ -115,7 +119,7 @@ export const GlitchText: React.FC<{
           ...base,
           position: "absolute",
           inset: 0,
-          color: C.cyan,
+          color: colorA,
           transform: `translateX(${-amt}px)`,
           mixBlendMode: "screen",
           opacity: 0.9,
@@ -128,7 +132,7 @@ export const GlitchText: React.FC<{
           ...base,
           position: "absolute",
           inset: 0,
-          color: C.magenta,
+          color: colorB,
           transform: `translateX(${amt}px)`,
           mixBlendMode: "screen",
           opacity: 0.9,
@@ -141,7 +145,7 @@ export const GlitchText: React.FC<{
           ...base,
           color,
           position: "relative",
-          textShadow: `0 0 ${size * 0.25}px rgba(0,240,255,0.55), 0 0 ${size * 0.6}px rgba(255,43,214,0.35)`,
+          textShadow: `0 0 ${size * 0.25}px ${colorA}8c, 0 0 ${size * 0.6}px ${colorB}59`,
         }}
       >
         {text}
