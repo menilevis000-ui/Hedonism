@@ -1,5 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Composition, Folder, Sequence } from "remotion";
+import { HedonismPlayTeaser } from "./teaser/Teaser";
+import { DURATION as TEASER_DURATION } from "./teaser/timeline";
 import {
   SceneCube, SceneFinaleDark, SceneFlood, SceneGroupBurst, SceneKinetic, SceneTaglineTeal,
 } from "./brand/Scenes2";
@@ -68,5 +70,6 @@ export const MyComposition = () => (
   <Folder name="HEDONISM-PLAY">
     <Composition id="HedonismPlayStory" component={HedonismPlayStory} durationInFrames={DURATION} fps={FPS} width={1080} height={1920} />
     <Composition id="HedonismPlayStoryNight" component={HedonismPlayStoryNight} durationInFrames={DURATION} fps={FPS} width={1080} height={1920} />
+    <Composition id="HedonismPlayDiceTeaser" component={HedonismPlayTeaser} durationInFrames={TEASER_DURATION} fps={FPS} width={1080} height={1920} />
   </Folder>
 );
