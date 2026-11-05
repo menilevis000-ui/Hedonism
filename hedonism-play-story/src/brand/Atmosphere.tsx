@@ -14,17 +14,17 @@ const TILES = new Array(26).fill(0).map((_, i) => ({
 }));
 
 /** Bright gallery-white space with drifting brand-colour light and floating 3D tiles */
-export const Atmosphere: React.FC = () => {
+export const Atmosphere: React.FC<{ dark?: boolean }> = ({ dark = false }) => {
   const f = useCurrentFrame();
   const t = f / 30;
   const intro = prog(f, 0, 30);
   const blob = (cx: number, cy: number, r: number, color: string, o: number): React.CSSProperties => ({
     position: "absolute", left: cx - r, top: cy - r, width: r * 2, height: r * 2, borderRadius: "50%",
-    background: `radial-gradient(circle, ${color} 0%, transparent 68%)`, opacity: o * intro,
+    background: `radial-gradient(circle, ${color} 0%, transparent 68%)`, opacity: o * intro * (dark ? 1.5 : 1),
   });
   return (
-    <AbsoluteFill style={{ backgroundColor: PAPER, overflow: "hidden" }}>
-      <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 55% at 50% 45%, #ffffff 0%, #f6f5f1 60%, #ebe9e3 100%)" }} />
+    <AbsoluteFill style={{ backgroundColor: dark ? "#0c0c0e" : PAPER, overflow: "hidden" }}>
+      <AbsoluteFill style={{ background: dark ? "radial-gradient(ellipse 80% 55% at 50% 45%, #1f1f24 0%, #121215 55%, #060607 100%)" : "radial-gradient(ellipse 80% 55% at 50% 45%, #ffffff 0%, #f6f5f1 60%, #ebe9e3 100%)" }} />
       <div style={blob(180 + Math.sin(t * 0.5) * 160, 380 + Math.cos(t * 0.4) * 140, 520, "rgba(242,111,181,0.22)", 1)} />
       <div style={blob(900 + Math.cos(t * 0.45) * 140, 620 + Math.sin(t * 0.5) * 200, 500, "rgba(247,102,31,0.14)", 1)} />
       <div style={blob(160 + Math.cos(t * 0.35) * 150, 1500 + Math.sin(t * 0.45) * 160, 560, "rgba(159,203,239,0.35)", 1)} />
@@ -39,10 +39,10 @@ export const Atmosphere: React.FC = () => {
             <div key={i} style={{
               position: "absolute", left: x, top: y, width: size, height: size, background: p.color,
               borderRadius: size * 0.12,
-              opacity: intro * (0.25 + p.z * 0.5),
+              opacity: intro * (0.25 + p.z * 0.5) * (dark ? 0.8 : 1),
               transform: `rotateX(${p.rot + f * p.spin}deg) rotateY(${p.rot * 0.7 + f * p.spin * 1.3}deg)`,
               filter: `blur(${p.z > 0.8 ? (p.z - 0.8) * 30 : (1 - p.z) * 2.5}px)`,
-              boxShadow: `0 ${size * 0.4}px ${size * 0.6}px rgba(0,0,0,0.06)`,
+              boxShadow: dark ? `0 0 ${size * 0.8}px ${p.color}88` : `0 ${size * 0.4}px ${size * 0.6}px rgba(0,0,0,0.06)`,
             }} />
           );
         })}

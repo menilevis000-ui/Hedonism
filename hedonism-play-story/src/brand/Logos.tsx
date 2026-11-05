@@ -5,7 +5,7 @@ import {
 } from "./theme";
 
 /* ───────── HEDONISM group mark: 2×2 colour tiles with letter glyphs ───────── */
-const Glyph: React.FC<{ k: number; bg: string; p: number }> = ({ k, bg, p }) => {
+export const Glyph: React.FC<{ k: number; bg: string; p: number }> = ({ k, bg, p }) => {
   const s = mix(0.2, 1.12, p);
   const g = (children: React.ReactNode) => (
     <g style={{ transformOrigin: "50% 50%", transform: `scale(${s})`, opacity: p }}>{children}</g>
@@ -113,8 +113,8 @@ export const PlayMark: React.FC<{ size: number; start: number; shine?: number }>
 };
 
 /** Full HEDONISM play lock-up with animated wordmark */
-export const PlayLockup: React.FC<{ scale?: number; start: number; shine?: number }> = ({
-  scale = 1, start, shine,
+export const PlayLockup: React.FC<{ scale?: number; start: number; shine?: number; wordColor?: string }> = ({
+  scale = 1, start, shine, wordColor = GREY,
 }) => {
   const f = useCurrentFrame();
   const mark = 250 * scale;
@@ -122,7 +122,7 @@ export const PlayLockup: React.FC<{ scale?: number; start: number; shine?: numbe
     <div style={{ display: "flex", alignItems: "center", gap: 30 * scale }}>
       <PlayMark size={mark} start={start} shine={shine} />
       <div style={{ display: "flex", flexDirection: "column", fontFamily: FONT, lineHeight: 0.86 }}>
-        <div style={{ fontWeight: 800, fontSize: 96 * scale, color: GREY, letterSpacing: "-0.02em", display: "flex", overflow: "hidden", padding: "0.04em 0" }}>
+        <div style={{ fontWeight: 800, fontSize: 96 * scale, color: wordColor, letterSpacing: "-0.02em", display: "flex", overflow: "hidden", padding: "0.04em 0" }}>
           {"HEDONISM".split("").map((ch, i) => {
             const p = prog(f, start + 20 + i * 2.5, 24, easeOut);
             return (
