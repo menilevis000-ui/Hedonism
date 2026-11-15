@@ -5,6 +5,8 @@ import { FPS, H, TOTAL, W } from "./theme";
 import { PlayTeaser } from "./play/PlayTeaser";
 import { PH, PLAY_TOTAL, PW } from "./play/brand";
 import { ArrowsAlive } from "./arrows/ArrowsAlive";
+import { ArrowsCosmos } from "./arrows/Cosmos";
+import { ArrowsGlitch } from "./arrows/Glitch";
 import { ARROWS_TOTAL, AH, AW } from "./arrows/data";
 
 export const RemotionRoot: React.FC = () => {
@@ -14,6 +16,22 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="ArrowsAlive"
         component={ArrowsAlive}
+        durationInFrames={ARROWS_TOTAL}
+        fps={FPS}
+        width={AW}
+        height={AH}
+      />
+      <Composition
+        id="ArrowsCosmos"
+        component={ArrowsCosmos}
+        durationInFrames={ARROWS_TOTAL}
+        fps={FPS}
+        width={AW}
+        height={AH}
+      />
+      <Composition
+        id="ArrowsGlitch"
+        component={ArrowsGlitch}
         durationInFrames={ARROWS_TOTAL}
         fps={FPS}
         width={AW}

@@ -25,6 +25,25 @@ python3 scripts/make_arrows_soundtrack.py
 npx remotion render ArrowsAlive out/arrows-alive.mp4
 ```
 
+### Two more styles (same footage, same tracking)
+**Cosmos**: `renders/arrows-cosmos.mp4`, code in `src/arrows/Cosmos.tsx`. Dreamy and slow.
+1. A single star wakes up. Then a glowing portal opens behind the stack and the whole room dissolves into deep space, with a nebula, a starfield that moves with the camera, shooting stars and drifting dust.
+2. The constellations draw themselves onto the arrows. The arrows lift off and float apart, each in its own drift, joined by threads of light between their stars.
+3. The arrows lock back together with a soft pulse and a ring of light.
+
+**Glitch**: `renders/arrows-glitch.mp4`, code in `src/arrows/Glitch.tsx`. Cyber and aggressive.
+1. TV static, then the signal is acquired. A tracking HUD locks onto each arrow, with live coordinates.
+2. A scan laser sweeps down. The arrows it passes turn from grey to full colour, with a perspective grid printed on their faces.
+3. On the beat, the arrows glitch: slice tears, RGB split and stutter jumps in the direction they point. Data packets race along the constellations toward each tip.
+4. The drop: an inverted flash and full-frame tears, then *ARROWS ONLINE 3/3*.
+
+```bash
+python3 scripts/make_cosmos_soundtrack.py
+python3 scripts/make_glitch_soundtrack.py
+npx remotion render ArrowsCosmos out/arrows-cosmos.mp4
+npx remotion render ArrowsGlitch out/arrows-glitch.mp4
+```
+
 ## HEDONISM play: story teaser
 `renders/hedonism-play-teaser.mp4` is 16 seconds, vertical 1080×1920 for Instagram Stories and Reels, 30fps, with sound.
 

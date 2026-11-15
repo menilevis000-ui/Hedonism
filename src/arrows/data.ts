@@ -70,3 +70,27 @@ export const centroid = (poly: Pt[]): Pt => {
   const y = poly.reduce((s, p) => s + p[1], 0) / poly.length;
   return [x, y];
 };
+
+/**
+ * Full silhouette of each arrow in the first frame, including the blue side faces,
+ * so an arrow can be lifted out of the footage whole.
+ */
+export const SILS: Pt[][] = [
+  [[185, 462], [375, 257], [417, 292], [417, 316], [762, 280], [794, 284], [794, 490], [765, 502], [410, 598], [408, 668], [340, 662]],
+  [[405, 593], [835, 483], [835, 376], [1110, 520], [1110, 612], [872, 872], [853, 862], [850, 795], [400, 782]],
+  [[125, 790], [400, 686], [402, 790], [805, 795], [831, 800], [752, 1075], [725, 1070], [300, 1056], [240, 1058]],
+];
+
+/** Constellation graph per arrow: each star joined to its two nearest neighbours. */
+export const STAR_EDGES: [number, number][][] = STARS.map((stars) => {
+  const edges = new Set<string>();
+  stars.forEach((s, i) => {
+    stars
+      .map((o, j) => ({ j, d: Math.hypot(o[0] - s[0], o[1] - s[1]) }))
+      .filter((o) => o.j !== i)
+      .sort((x, y) => x.d - y.d)
+      .slice(0, 2)
+      .forEach((o) => edges.add([Math.min(i, o.j), Math.max(i, o.j)].join(",")));
+  });
+  return [...edges].map((e) => e.split(",").map(Number) as [number, number]);
+});

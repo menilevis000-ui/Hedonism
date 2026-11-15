@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  AbsoluteFill,
-  Html5Audio,
-  OffthreadVideo,
-  interpolate,
-  random,
-  staticFile,
-  useCurrentFrame,
-} from "remotion";
+import { AbsoluteFill, Html5Audio, interpolate, random, staticFile, useCurrentFrame } from "remotion";
 import {
   ARROWS_TOTAL,
   AH,
@@ -18,16 +10,13 @@ import {
   POLYS,
   Pt,
   STARS,
-  TIPS,
   apply,
   centroid,
   homography,
   toMatrix3d,
 } from "./data";
 import { BEATS, DROP, FLICKERS, IGNITE } from "./timeline";
-
-const FOOTAGE = staticFile("arrows/footage-slow.mp4");
-const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+import { Footage, along, clamp, clipPolygon, screenDir, screenPoly, svgPath } from "./shared";
 
 const COL = {
   pink: "#ff5ce1",
@@ -66,55 +55,11 @@ const flash = (a: number, f: number) => {
 
 const flickerOn = (f: number) => FLICKERS.some((x) => f >= x && f < x + 2);
 
-/** Screen-space unit vector the arrow points in at frame f. */
-const screenDir = (a: number, f: number): Pt => {
-  const h = homography(a, f);
-  const p1 = apply(h, TIPS[a]);
-  const p0 = apply(h, [TIPS[a][0] - DIRS[a][0] * 200, TIPS[a][1] - DIRS[a][1] * 200]);
-  const l = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]);
-  return [(p1[0] - p0[0]) / l, (p1[1] - p0[1]) / l];
-};
-
 const offset = (a: number, f: number): Pt => {
   const d = screenDir(a, f);
   const p = punch(a, f);
   return [d[0] * p, d[1] * p];
 };
-
-const screenPoly = (a: number, f: number, local: Pt[] = POLYS[a]) => {
-  const h = homography(a, f);
-  return local.map((p) => apply(h, p));
-};
-
-const svgPath = (pts: Pt[]) =>
-  `M${pts.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join("L")}Z`;
-
-const clipPolygon = (pts: Pt[]) =>
-  `polygon(${pts.map((p) => `${p[0].toFixed(1)}px ${p[1].toFixed(1)}px`).join(",")})`;
-
-/** Position of a local point along the arrow, 0 = tail, 1 = tip. */
-const along = (a: number, p: Pt) => {
-  const tip = TIPS[a];
-  const len = a === 1 ? 710 : 600;
-  const d = (tip[0] - p[0]) * DIRS[a][0] + (tip[1] - p[1]) * DIRS[a][1];
-  return 1 - Math.max(0, Math.min(1, d / len));
-};
-
-/* ---------------------------------------------------------------- footage */
-
-const Footage: React.FC<{ filter?: string; clip?: string; style?: React.CSSProperties }> = ({
-  filter,
-  clip,
-  style,
-}) => (
-  <AbsoluteFill style={style}>
-    <OffthreadVideo
-      src={FOOTAGE}
-      muted
-      style={{ width: AW, height: AH, filter, clipPath: clip }}
-    />
-  </AbsoluteFill>
-);
 
 /** The real arrow, cut out of the footage, lit up and kicked forward on the beat. */
 const ArrowCut: React.FC<{ a: number }> = ({ a }) => {
