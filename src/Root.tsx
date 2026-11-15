@@ -7,11 +7,21 @@ import { PH, PLAY_TOTAL, PW } from "./play/brand";
 import { ArrowsAlive } from "./arrows/ArrowsAlive";
 import { ArrowsCosmos } from "./arrows/Cosmos";
 import { ArrowsGlitch } from "./arrows/Glitch";
+import { BlowKiss, KISS_TOTAL } from "./kiss/BlowKiss";
 import { ARROWS_TOTAL, AH, AW } from "./arrows/data";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* The illustrated woman on the panel blows a kiss at the camera */}
+      <Composition
+        id="BlowKiss"
+        component={BlowKiss}
+        durationInFrames={KISS_TOTAL}
+        fps={FPS}
+        width={1080}
+        height={1920}
+      />
       {/* The constellation arrows installation, brought to life over real footage */}
       <Composition
         id="ArrowsAlive"

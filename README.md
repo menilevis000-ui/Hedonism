@@ -2,6 +2,26 @@
 
 Teaser videos built in code with [Remotion](https://remotion.dev).
 
+## Blow Kiss (the illustrated woman panel)
+`renders/blow-kiss.mp4` is 5.6 seconds, vertical 1080×1920, 30fps, with sound. The 50fps phone clip plays at 0.6× (one source frame per output frame), then holds on its last frame. The panel is tracked with one homography per frame, so the drawing sits on her face as the camera pans.
+
+1. She closes her eye and blushes, lipstick appears on her lips, and they pucker. Little hearts float up.
+2. *Mwah*: her lips squeeze and pop, and a lipstick kiss flies out at the camera, growing, spinning and trailing sparkles.
+3. The kiss lands on the "lens" with a bounce, a ring of hearts and a flash. Her lips relax, she opens her eye, and then she winks.
+
+To redraw her eye and lips, the script first erases the original line art there with OpenCV inpainting, into a "clean plate".
+
+Code: `src/kiss/BlowKiss.tsx`. The timeline is in `KISS` at the top of that file.
+
+```bash
+ffmpeg -i IMG.mov -vf "scale=1080:1920,format=yuv420p" -c:v libx264 -crf 16 -an -r 50 public/kiss/footage50.mp4
+python3 scripts/track_kiss.py            # tracking + clean plate (public/kiss/clean.mp4)
+ffmpeg -i public/kiss/footage50.mp4 -vf "setpts=PTS*50/30" -r 30 -c:v libx264 -crf 16 -pix_fmt yuv420p public/kiss/footage.mp4
+ffmpeg -i public/kiss/clean.mp4 -vf "setpts=PTS*50/30" -r 30 -c:v libx264 -crf 16 -pix_fmt yuv420p public/kiss/clean30.mp4
+python3 scripts/make_kiss_soundtrack.py
+npx remotion render BlowKiss out/blow-kiss.mp4
+```
+
 ## Arrows Alive (constellation arrows installation)
 `renders/arrows-alive.mp4` is 9.1 seconds, vertical 1080×1920, 30fps, with sound. It uses real footage of the three-arrow installation. The footage is slowed to 0.75× with motion interpolation, and each arrow is tracked in 3D, so every effect stays stuck to the real arrows as the camera moves.
 
