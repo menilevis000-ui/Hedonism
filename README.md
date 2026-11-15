@@ -2,7 +2,30 @@
 
 Teaser videos built in code with [Remotion](https://remotion.dev).
 
-## HEDONISM play: story teaser (main)
+## Arrows Alive (constellation arrows installation)
+`renders/arrows-alive.mp4` is 9.1 seconds, vertical 1080×1920, 30fps, with sound. It uses real footage of the three-arrow installation. The footage is slowed to 0.75× with motion interpolation, and each arrow is tracked in 3D, so every effect stays stuck to the real arrows as the camera moves.
+
+1. **Dormant** (0–1s): the room is dimmed and the arrows' neon edges flicker like a tube light warming up.
+2. **Ignition** (1–2.7s): one arrow at a time, a neon outline draws around it. Its constellation lines light up from tail to tip, every star flares, and a shockwave hits.
+3. **Alive** (2.7–5.8s): the arrows kick forward on the beat in the direction they point. Each kick throws a holographic copy of the arrow, rippling outlines and sparks off the arrowhead. Energy pulses keep flowing along the constellation lines toward each tip.
+4. **Build and drop** (5.8–9.1s): the kicks speed up and light rays rise behind the stack. Then all three arrows fire together with a flash and a big shockwave, and the clip ends in an afterglow.
+
+In the soundtrack, each arrow's hits are panned the way it points: the top and bottom arrows to the left, the middle one to the right.
+
+Code: `src/arrows/`. The timeline is in `src/arrows/timeline.ts`.
+
+```bash
+# 1. footage: rotate/scale the phone clip, then make the 0.75x slow-mo
+ffmpeg -i IMG_5240.mov -vf "scale=1080:1920,fps=30,format=yuv420p" -c:v libx264 -crf 18 -an public/arrows/footage.mp4
+ffmpeg -i public/arrows/footage.mp4 -vf "minterpolate=fps=40:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,setpts=PTS*4/3,fps=30" -c:v libx264 -crf 18 -pix_fmt yuv420p public/arrows/footage-slow.mp4
+# 2. tracking + artwork extraction (needs opencv-python-headless)
+python3 scripts/track_arrows.py
+# 3. sound + render
+python3 scripts/make_arrows_soundtrack.py
+npx remotion render ArrowsAlive out/arrows-alive.mp4
+```
+
+## HEDONISM play: story teaser
 `renders/hedonism-play-teaser.mp4` is 16 seconds, vertical 1080×1920 for Instagram Stories and Reels, 30fps, with sound.
 
 1. **Group logo** (0–3.3s): the four HEDONISM group tiles fly in from the corners and snap together with a shockwave. Then the wordmark appears: *HEDONISM group / Unlimited design*.
